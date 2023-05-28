@@ -1,10 +1,10 @@
-import { ClientRequest, IncomingMessage, ServerResponse } from 'http';
+import { config } from 'dotenv';
+import { IncomingMessage, ServerResponse, createServer } from 'http';
 
-const http = require('http');
-var os = require('os');
+config();
 
-const host = 'localhost';
-const port = 8080;
+const host = process.env.HOST;
+const port = Number(process.env.PORT);
 
 let dataSource = 0;
 const updateDataSource = () => {
@@ -31,7 +31,8 @@ const requestListener = function (req: IncomingMessage, res: ServerResponse) {
 	}
 };
 
-const server = http.createServer(requestListener);
+const server = createServer(requestListener);
+
 server.listen(port, host, () => {
 	setInterval(() => updateDataSource(), 500);
 	console.log(`server running at http://${host}:${port}`);
